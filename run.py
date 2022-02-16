@@ -17,9 +17,8 @@ class GameController(object):
 
     def startGame(self):
         self.setBackground()
-        self.nodes = NodeGroup()
-        self.nodes.setupTestNodes()
-        self.pacman = Pacman(self.nodes.nodeList[0])
+        self.nodes = NodeGroup("mazetest.txt")
+        self.pacman = Pacman(self.nodes.getStartTempNode())
 
     def update(self):
         # return amount of time passed since last time this line was called
