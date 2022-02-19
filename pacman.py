@@ -24,17 +24,13 @@ class Pacman(object):
     def update(self, dt):
         self.position += self.directions[self.direction]*self.speed*dt
         direction = self.getValidKey()
-        #self.direction = direction
-        #self.node = self.getNewTarget(direction)
-        #self.setPosition()
         if self.overshotTarget():
             self.node = self.target
+            if self.node.neighbors[PORTAL] is not None:
+                self.node = self.node.neighbors[PORTAL]
             self.target = self.getNewTarget(direction)
             if self.target is not self.node:
                 self.direction = direction
-            #else:
-            #    self.direction = STOP
-            #self.setPosition()
             else:
                 self.target = self.getNewTarget(self.direction)
 
