@@ -13,10 +13,20 @@ class Pacman(object):
         self.direction = STOP
         self.speed = 100
         self.radius = 10
+        self.collideRadius = 5
         self.color = YELLOW
         self.node = node
         self.setPosition()
         self.target = node
+
+    def eatPellets(self, pelletList):
+        for pellet in pelletList:
+            d = self.position - pellet.position
+            dSquared = d.magnitudeSquared()
+            rSquared = (pellet.radius+self.collideRadius)**2
+            if dSquared <= rSquared:
+                return pellet
+        return None
 
     def setPosition(self):
         self.position = self.node.position.copy()
