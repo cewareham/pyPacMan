@@ -35,6 +35,7 @@ class GameController(object):
         self.pacman = Pacman(self.nodes.getStartTempNode())
         self.pellets = PelletGroup("maze1.txt")
         self.ghost = Ghost(self.nodes.getStartTempNode(), self.pacman)
+        self.ghost.setSpawnNode(self.nodes.getNodeFromTiles(2+11.5, 3+14))
 
     def update(self):
         # return amount of time passed since last time this line was called
@@ -43,8 +44,14 @@ class GameController(object):
         self.ghost.update(dt)
         self.pellets.update(dt)
         self.checkPelletEvents()
+        self.checkGhostEvents()
         self.checkEvents()
         self.render()
+
+    def checkGhostEvents(self):
+        if self.pacman.collideGhost(self.ghost):
+            if self.ghost.mode.current is FREIGHT:
+                self.ghost.startSpawn()
 
     def checkEvents(self):
         for event in pygame.event.get():
