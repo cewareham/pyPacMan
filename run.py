@@ -18,6 +18,8 @@ class GameController(object):
         if pellet:
             self.pellets.numEaten += 1
             self.pellets.pelletList.remove(pellet)
+            if pellet.name == POWERPELLET:
+                self.ghost.startFreight()
 
     def setBackground(self):
         self.background = pygame.surface.Surface(SCREENSIZE).convert()
