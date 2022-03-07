@@ -19,6 +19,11 @@ class Entity(object):
         self.directionMethod = self.randomDirection
         self.setStartNode(node)
 
+    def setBetweenNodes(self, direction):
+        if self.node.neighbors[direction] is not None:
+            self.target = self.node.neighbors[direction]
+            self.position = (self.node.position + self.target.position) / 2.0
+
     def setStartNode(self, node):
         self.node = node
         self.startNode = node

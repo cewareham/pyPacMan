@@ -20,6 +20,7 @@ class Pacman(Entity):
         self.setPosition()
         self.target = node
         self.direction = LEFT
+        self.setBetweenNodes(LEFT)
 
     def eatPellets(self, pelletList):
         for pellet in pelletList:
