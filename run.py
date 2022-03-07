@@ -1,3 +1,4 @@
+from pickle import TRUE
 import pygame
 from pygame.locals import *
 from constants import *
@@ -31,12 +32,15 @@ class GameController(object):
         homekey = self.nodes.createHomeNodes(11.5, 14)
         self.nodes.connectHomeNodes(homekey, (12,14), LEFT)
         self.nodes.connectHomeNodes(homekey, (15,14), RIGHT)
-        self.pacman = Pacman(self.nodes.getStartTempNode())
+        self.pacman = Pacman(self.nodes.getNodeFromTiles(15, 26))
         self.pellets = PelletGroup("maze1.txt")
         self.ghosts = GhostGroup(self.nodes.getStartTempNode(), self.pacman)
-        spawnkey = self.nodes.constructKey(2+11.5, 3+14)
-        self.ghosts.setSpawnNode(self.nodes.nodesLUT[spawnkey])
-
+        self.ghosts.blinky.setStartNode(self.nodes.getNodeFromTiles(2+11.5, 0+14))
+        self.ghosts.pinky.setStartNode(self.nodes.getNodeFromTiles(2+11.5, 3+14))
+        self.ghosts.inky.setStartNode(self.nodes.getNodeFromTiles(0+11.5, 3+14))
+        self.ghosts.clyde.setStartNode(self.nodes.getNodeFromTiles(4+11.5, 3+14))
+        self.ghosts.setSpawnNode(self.nodes.getNodeFromTiles(2+11.5, 3+14))
+        
     def update(self):
         # return amount of time passed since last time this line was called
         dt = self.clock.tick(30) / 1000.0
