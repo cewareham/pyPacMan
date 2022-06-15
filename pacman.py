@@ -21,6 +21,17 @@ class Pacman(Entity):
         self.target = node
         self.direction = LEFT
         self.setBetweenNodes(LEFT)
+        self.alive = True
+
+    def reset(self):
+        Entity.reset(self)
+        self.direction = LEFT
+        self.setBetweenNodes(LEFT)
+        self.alive = True
+
+    def die(self):
+        self.alive = False
+        self.direction = STOP
 
     def eatPellets(self, pelletList):
         for pellet in pelletList:

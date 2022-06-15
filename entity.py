@@ -19,6 +19,12 @@ class Entity(object):
         self.directionMethod = self.randomDirection
         self.setStartNode(node)
 
+    def reset(self):
+        self.setStartNode(self.startNode)
+        self.direction = STOP
+        self.speed = 100
+        self.visible = True
+
     def setBetweenNodes(self, direction):
         if self.node.neighbors[direction] is not None:
             self.target = self.node.neighbors[direction]
