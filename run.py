@@ -7,6 +7,7 @@ from nodes import NodeGroup
 from pellets import PelletGroup
 from ghosts import GhostGroup
 from fruit import Fruit
+from pauser import Pause
 
 class GameController(object):
     def __init__(self):
@@ -15,6 +16,7 @@ class GameController(object):
         self.background = None
         self.clock = pygame.time.Clock()
         self.fruit = None
+        self.pause = Pause(True)
 
     def checkPelletEvents(self):
         pellet = self.pacman.eatPellets(self.pellets.pelletList)
@@ -47,14 +49,18 @@ class GameController(object):
     def update(self):
         # return amount of time passed since last time this line was called
         dt = self.clock.tick(30) / 1000.0
-        self.pacman.update(dt)
-        self.ghosts.update(dt)
         self.pellets.update(dt)
-        if self.fruit is not None:
-            self.fruit.update(dt)
-        self.checkPelletEvents()
-        self.checkGhostEvents()
-        self.checkFruitEvents()
+        if not self.pause.paused:
+            self.pacman.update(dt)
+            self.ghosts.update(dt)
+            if self.fruit is not None:
+                self.fruit.update(dt)
+            self.checkPelletEvents()
+            self.checkGhostEvents()
+            self.checkFruitEvents()
+        afterPauseMethod = self.pause.update(dt)
+        if afterPauseMethod is not None:
+            afterPauseMethod()
         self.checkEvents()
         self.render()
 
@@ -72,12 +78,30 @@ class GameController(object):
         for ghost in self.ghosts:
             if self.pacman.collideGhost(ghost):
                 if ghost.mode.current is FREIGHT:
+                    self.pacman.visible = False
+                    ghost.visible = False
+                    self.pause.setPause(pauseTime=1,func=self.showEntities)
                     ghost.startSpawn()
+
+    def showEntities(self):
+        self.pacman.visible = True
+        self.ghosts.show()
+
+    def hideEntities(self):
+        self.pacman.visible = False
+        self.ghosts.hide()
 
     def checkEvents(self):
         for event in pygame.event.get():
             if event.type == QUIT:
                 exit()
+            elif event.type == KEYDOWN:
+                if event.key == K_SPACE:
+                    self.pause.setPause(playerPaused=True)
+                    if not self.pause.paused:
+                        self.showEntities()
+                    else:
+                        self.hideEntities()
 
     def render(self):
         self.screen.blit(self.background, (0, 0))
