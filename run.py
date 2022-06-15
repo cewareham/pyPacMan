@@ -17,6 +17,13 @@ class GameController(object):
         self.clock = pygame.time.Clock()
         self.fruit = None
         self.pause = Pause(True)
+        self.level = 0
+
+    def nextLevel(self):
+        self.showEntities()
+        self.level += 1
+        self.pause.paused = True
+        self.startGame()
 
     def checkPelletEvents(self):
         pellet = self.pacman.eatPellets(self.pellets.pelletList)
@@ -25,6 +32,9 @@ class GameController(object):
             self.pellets.pelletList.remove(pellet)
             if pellet.name is POWERPELLET:
                 self.ghosts.startFreight()
+            if self.pellets.isEmpty():
+                self.hideEntities()
+                self.pause.setPause(pauseTime=3, func=self.nextLevel)
 
     def setBackground(self):
         self.background = pygame.surface.Surface(SCREENSIZE).convert()
