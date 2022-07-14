@@ -74,7 +74,7 @@ class GameController(object):
 
     def startGame(self):
         self.setBackground()
-        self.mazesprites = MazeSprites("maze1.txt")
+        self.mazesprites = MazeSprites("maze1.txt", "maze1_rotation.txt")
         self.background = self.mazesprites.constructBackground(self.background, self.level%5)
         self.nodes = NodeGroup("maze1.txt")
         self.nodes.setPortalPair((0,17), (27,17))
@@ -89,7 +89,7 @@ class GameController(object):
         self.ghosts.inky.setStartNode(self.nodes.getNodeFromTiles(0+11.5, 3+14))
         self.ghosts.clyde.setStartNode(self.nodes.getNodeFromTiles(4+11.5, 3+14))
         self.ghosts.setSpawnNode(self.nodes.getNodeFromTiles(2+11.5, 3+14))
-        #self.nodes.denyHomeAccess(self.pacman)
+        self.nodes.denyHomeAccess(self.pacman)
         self.nodes.denyHomeAccessList(self.ghosts)
         self.nodes.denyAccessList(2+11.5, 3+14, LEFT, self.ghosts)
         self.nodes.denyAccessList(2+11.5, 3+14, RIGHT, self.ghosts)
@@ -186,7 +186,6 @@ class GameController(object):
 
     def render(self):
         self.screen.blit(self.background, (0, 0))
-        self.nodes.render(self.screen)
         self.pellets.render(self.screen)
         if self.fruit is not None:
             self.fruit.render(self.screen)
