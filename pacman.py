@@ -53,6 +53,7 @@ class Pacman(Entity):
         return False
 
     def update(self, dt):
+        self.sprites.update(dt)
         self.position += self.directions[self.direction]*self.speed*dt
         direction = self.getValidKey()
         if self.overshotTarget():
