@@ -60,7 +60,7 @@ class PelletGroup(object):
         return np.loadtxt(textfile, dtype='<U1')
 
     def isEmpty(self):
-        if len(self.pelletList) == 0:
+        if len(self.pelletList) == 150:
             return True
         return False
 
